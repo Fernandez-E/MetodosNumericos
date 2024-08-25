@@ -45,13 +45,13 @@ def iteracao(equacao, tolerancia, i, lim, x0, x1):
 
     #VERIFICACAO DE RAIZ
     if (abs(fx[0]) <= tolerancia):
-        print(f'{fx[0]} < {tolerancia}')
+        print(f'{abs(fx[0])} < {tolerancia}')
         print(f'Finalizado para raiz = {x0}')
         print('#' * 100)
         return [x0, i]
 
     elif (abs(fx[1]) <= tolerancia):
-        print(f'{fx[1]} < {tolerancia}')
+        print(f'{abs(fx[1])} < {tolerancia}')
         print(f'Finalizado para raiz = {x1}')
         print('#' * 100)
         return [x1, i]

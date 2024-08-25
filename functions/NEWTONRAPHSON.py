@@ -1,17 +1,17 @@
 from math import sin, cos, tan, exp
 import sys
 
-def secantes(equacao):
+def newton(equacao):
     print('#' * 100)
-    print('METODO DAS SECANTES')
+    print('METODO DE NEWTON-RAPHSON')
     print('#' * 100)
 
     # INSERCAO DE DADOS DE ENTRADA
     print('Entrada:')
     print('#' * 100)
-
+    print('Informe a derivada da equacao com a variavel sendo escrita OBRIGATORIAMENTE como "x"')
+    derivada = input('>>> ').lower()
     x0 = float(input('Valor inicial x0: '))
-    x1 = float(input('Valor inicial x1: '))
     tolerancia = float(input('Tolerancia: '))
     limite = int(input('Limite de iteracoes: '))
 
@@ -22,29 +22,28 @@ def secantes(equacao):
     print('ITERACOES')
     print('#' * 100)
 
-    iteracao(equacao, tolerancia, i, limite, x0, x1)
+    iteracao(equacao, derivada, tolerancia, i, limite, x0)
 
 
-def iteracao(equacao, tolerancia, i, lim, x0, x1):
+def iteracao(equacao, derivada, tolerancia, i, lim, x0):
     # EXIBICAO DE DADOS INICIAIS
     print('#' * 100)
 
     fx = []  # VARIAVEL PARA ARMAZENAMENTO DE RESULTADOS DA FUNCAO
+    dx = [] # VARIAVEL PARA ARMAZENAMENTO DE RESULTADOS DA DERIVADA DA FUNCAO
 
     # CONDICAO DE PARADA
     if i >= lim:
-        return [x0, x1, i]
+        return [x0, i]
 
     # CALCULOS DA EQUACAO
     x = x0
     fx.append(eval(equacao))
-    x = x1
-    fx.append(eval(equacao))
+    dx.append(eval(derivada))
 
     # EXIBICAO DE RESULTADOS INSTANTANEOS
     print(f'Iteracao: {i}')
-    print(f'x0: {x0} | f(x0): {fx[0]}')
-    print(f'x1: {x1} | f(x1): {fx[1]}')
+    print(f"x0: {x0} | f(x0): {fx[0]} | f'(x0): {dx[0]}")
 
     # VERIFICACAO DE RAIZ
     if (abs(fx[0]) <= tolerancia):
@@ -53,17 +52,9 @@ def iteracao(equacao, tolerancia, i, lim, x0, x1):
         print('#' * 100)
         return [x0, i]
 
-    elif (abs(fx[1]) <= tolerancia):
-        print(f'{abs(fx[1])} < {tolerancia}')
-        print(f'Finalizado para raiz = {x1}')
-        print('#' * 100)
-        return [x1, i]
     else:
-        x2 = x0 - (fx[0] * ((x1-x0) / (fx[1]-fx[0])))
-        x = x2
+        x1 = x0 - (fx[0] / dx[0])
+        x = x1
         fx.append(eval(equacao))
 
-        if fx[0] * fx[2] < 0:
-            return iteracao(equacao, tolerancia, i + 1, lim, x0, x2)
-        else:
-            return iteracao(equacao, tolerancia, i + 1, lim, x2, x1)
+        return iteracao(equacao, derivada, tolerancia, i + 1, lim, x1)
